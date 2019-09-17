@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace EventApp.Models {
     public class Event {
@@ -13,6 +14,8 @@ namespace EventApp.Models {
         public DateTime End { get; set; }
 
         public Place Place { get; set; }
-        public int PlaceId { get; set; }
+        public int PlaceIdentity { get; set; }
+
+        public List<EventStaff> Staff { get; set; }
     }
 }

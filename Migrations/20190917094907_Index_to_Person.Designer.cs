@@ -4,14 +4,16 @@ using EventApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventApp.Migrations
 {
     [DbContext(typeof(EventAppDbContext))]
-    partial class EventAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190917094907_Index_to_Person")]
+    partial class Index_to_Person
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,47 +33,15 @@ namespace EventApp.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("PlaceIdentity");
+                    b.Property<int>("PlaceId");
 
                     b.Property<DateTime>("Start");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlaceIdentity");
+                    b.HasIndex("PlaceId");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("EventApp.Models.EventStaff", b =>
-                {
-                    b.Property<int>("EventId");
-
-                    b.Property<int>("OrganizerId");
-
-                    b.HasKey("EventId", "OrganizerId");
-
-                    b.HasIndex("OrganizerId");
-
-                    b.ToTable("EventStaff");
-                });
-
-            modelBuilder.Entity("EventApp.Models.Friend", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FriendPersonId");
-
-                    b.Property<int>("PersonId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendPersonId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Friend");
                 });
 
             modelBuilder.Entity("EventApp.Models.Invitation", b =>
@@ -87,21 +57,6 @@ namespace EventApp.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("Invitations");
-                });
-
-            modelBuilder.Entity("EventApp.Models.Organizer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Organizer");
                 });
 
             modelBuilder.Entity("EventApp.Models.Person", b =>
@@ -140,34 +95,8 @@ namespace EventApp.Migrations
                 {
                     b.HasOne("EventApp.Models.Place", "Place")
                         .WithMany("Events")
-                        .HasForeignKey("PlaceIdentity")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("EventApp.Models.EventStaff", b =>
-                {
-                    b.HasOne("EventApp.Models.Event", "Event")
-                        .WithMany("Staff")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("EventApp.Models.Organizer", "Organizer")
-                        .WithMany("Events")
-                        .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("EventApp.Models.Friend", b =>
-                {
-                    b.HasOne("EventApp.Models.Person", "FriendPerson")
-                        .WithMany()
-                        .HasForeignKey("FriendPersonId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("EventApp.Models.Person", "Person")
-                        .WithMany("Friends")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("EventApp.Models.Invitation", b =>
@@ -175,12 +104,12 @@ namespace EventApp.Migrations
                     b.HasOne("EventApp.Models.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EventApp.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
