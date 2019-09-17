@@ -4,7 +4,7 @@ namespace EventApp.Models {
         Created, Accepted, Declined
     }
 
-    public class Invitation {
+    public class Invitation : AbstractEntity {
         public int EventId { get; set; }
         public Event Event { get; set; }
 

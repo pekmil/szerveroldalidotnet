@@ -14,5 +14,7 @@ namespace EventApp.Services {
         IQueryable<Person> GetPeople();
 
         Task<Person> GetPersonAsync(int personId);
+        
+        IQueryable<Person> GetAfter1990();
     }
 }

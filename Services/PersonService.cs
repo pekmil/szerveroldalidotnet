@@ -1,15 +1,18 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EventApp.Models;
+using EventApp.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventApp.Services {
     public class PersonService : IPersonService
     {
         private readonly EventAppDbContext _context;
+        private readonly IPersonRepository _personRepository;
 
-        public PersonService(EventAppDbContext context){
+        public PersonService(EventAppDbContext context, IPersonRepository personRepository){
             _context = context;
+            _personRepository = personRepository;
         }
 
         public async Task<Person> CreatePersonAsync(Person person)
@@ -41,6 +44,11 @@ namespace EventApp.Services {
         {
             _context.Update(person);
             await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<Person> GetAfter1990()
+        {
+            return _personRepository.GetAfter1990People();
         }
     }
 }

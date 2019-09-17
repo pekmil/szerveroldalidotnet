@@ -2,9 +2,8 @@
 
 namespace EventApp.Models
 {
-    public class Friend
+    public class Friend : AbstractEntity
     {
-        public int Id { get; set; }
         public int PersonId { get; set; }
         public Person Person { get; set; }        
         public int FriendPersonId { get; set; }

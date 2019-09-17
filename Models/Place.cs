@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 
 namespace EventApp.Models {
-    public class Place {
-        public int Id { get; set; }
-
+    public class Place : AbstractEntity {
         public string Name { get; set; }
 
         public string Address { get; set; }

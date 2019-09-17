@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace EventApp.Models {
-    public class Event {
-        public int Id { get; set; }
-
+    public class Event : AbstractEntity {
         public string Name { set; get; }
 
         public string Description { set; get; }

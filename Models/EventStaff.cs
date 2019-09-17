@@ -1,6 +1,6 @@
 namespace EventApp.Models
 {
-    public class EventStaff
+    public class EventStaff : AbstractEntity
     {
         public int EventId { get; set; }
         public Event Event { get; set; }

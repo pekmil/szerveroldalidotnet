@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EventApp.Models;
 using EventApp.Models.Mappings;
+using EventApp.Repository;
 using EventApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,8 @@ namespace EventApp
             services.AddScoped<IPlaceService, PlaceService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IInvitationService, InvitationService>();
+
+            services.AddScoped<IPersonRepository, PersonRepository>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EventApp.Models;
 using EventApp.Models.Mappings;
+using EventApp.Repository;
 using EventApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +17,11 @@ namespace EventApp.Controllers
     public class PeopleController : ControllerBase
     {
         private readonly IPersonService _personService;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;        
 
         public PeopleController(IPersonService personService, IMapper mapper){
             _personService = personService;
-            _mapper = mapper;
+            _mapper = mapper;            
         }
 
         /// <summary>
@@ -105,6 +106,22 @@ namespace EventApp.Controllers
         {
             await _personService.DeletePersonAsync(personId);
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets all People who birth after 1990.
+        /// </summary>
+        /// <response code="200">Successful query</response>
+        /// <response code="500">Server error</response>
+        // GET api/people/getafter1990
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PersonReadDto>), 200)]
+        [ProducesResponseType(500)]
+        public ActionResult<IEnumerable<PersonReadDto>> GetAfter1990()
+        {
+            var people = _personService.GetAfter1990();
+            var peopleDtos = people.Select(p => _mapper.Map<PersonReadDto>(p));
+            return Ok(peopleDtos);
         }
     }
 }
