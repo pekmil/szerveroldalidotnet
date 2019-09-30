@@ -14,5 +14,7 @@ namespace EventApp.Services {
         IQueryable<Event> GetEvents();
 
         Task<Event> GetEventAsync(int evtId);
+
+        object GetEventsAndPlaces();
     }
 }

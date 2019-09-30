@@ -106,5 +106,20 @@ namespace EventApp.Controllers
             await _eventService.DeleteEventAsync(evtId);
             return Ok();
         }
+
+        /// <summary>
+        /// Get all events and places.
+        /// </summary>
+        /// <response code="200">Successful query</response>
+        /// <response code="500">Server error</response>
+        // GET api/events/geteventsandplaces
+        [HttpGet]
+        [ProducesResponseType(typeof(EventReadDto), 200)]
+        [ProducesResponseType(500)]
+        public ActionResult<object> GetEventsAndPlaces()
+        {
+            var obj = _eventService.GetEventsAndPlaces();
+            return Ok(obj);
+        }
     }
 }

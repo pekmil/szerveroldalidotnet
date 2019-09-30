@@ -11,10 +11,10 @@ namespace EventApp.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : AbstractEntity
     {
-        protected readonly EventAppDbContext Context;
+        protected readonly DbContext Context;
         protected readonly DbSet<TEntity> DbSet;
 
-        public Repository(EventAppDbContext ctx)
+        public Repository(DbContext ctx)
         {
             Context = ctx;
             DbSet = ctx.Set<TEntity>();

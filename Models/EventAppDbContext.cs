@@ -27,7 +27,7 @@ namespace EventApp.Models {
 
             //modelBuilder.Entity<Person>().HasMany(p => p.Friends).WithOne(p => p).HasForeignKey(p => p.Id);
             modelBuilder.Entity<Friend>().HasKey(f => new {f.Id});
-            modelBuilder.Entity<Friend>().HasOne(f => f.Person).WithMany(p => p.Friends).HasForeignKey(f => f.PersonId);
+            modelBuilder.Entity<Friend>().HasOne(f => f.Person).WithMany(p => p.Friends).HasForeignKey(f => f.PersonId).OnDelete(DeleteBehavior.Restrict);
             
             modelBuilder.Entity<EventStaff>().HasKey(es => new { es.EventId, es.OrganizerId });
             modelBuilder.Entity<EventStaff>().HasOne(es => es.Event).WithMany(e => e.Staff).HasForeignKey(es => es.EventId);

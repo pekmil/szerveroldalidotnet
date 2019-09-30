@@ -9,6 +9,7 @@ using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Repository;
 using EventApp.Services;
+using EventApp.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -45,6 +46,9 @@ namespace EventApp
             services.AddScoped<IInvitationService, InvitationService>();
 
             services.AddScoped<IPersonRepository, PersonRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork<EventAppDbContext>>();
+            services.AddScoped<IEventUnitOfWork, EventUnitOfWork<EventAppDbContext>>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
