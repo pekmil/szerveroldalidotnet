@@ -27,6 +27,7 @@ namespace EventApp.Services {
             // return invitation;
 
             await _unitOfWork.GetRepository<Invitation>().Create(invitation);
+            await _unitOfWork.SaveChangesAsync();
             return invitation;
         }
 
@@ -56,6 +57,7 @@ namespace EventApp.Services {
             {
                 invitation.Status = status;
                 await _unitOfWork.GetRepository<Invitation>().Update(invitation.Id, invitation);
+                await _unitOfWork.SaveChangesAsync();
             }
         }
     }

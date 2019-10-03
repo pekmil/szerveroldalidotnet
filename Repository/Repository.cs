@@ -33,20 +33,17 @@ namespace EventApp.Repository
         public async Task Create(TEntity entity)
         {
             await DbSet.AddAsync(entity);
-            await Context.SaveChangesAsync();
         }
 
         public async Task Update(int id, TEntity entity)
         {
             DbSet.Update(entity);
-            await Context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
             var entity = await GetById(id);
             DbSet.Remove(entity);
-            await Context.SaveChangesAsync();
         }
 
         public IQueryable<TEntity> GetAsQueryable(

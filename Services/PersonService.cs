@@ -30,6 +30,7 @@ namespace EventApp.Services {
             // return person;
 
             await _unitOfWork.GetRepository<Person>().Create(person);
+            await _unitOfWork.SaveChangesAsync();
             return person;
         }
 
@@ -40,6 +41,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
 
             await _unitOfWork.GetRepository<Person>().Delete(personId);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Person> GetPersonAsync(int personId)
@@ -63,6 +65,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
 
             await _unitOfWork.GetRepository<Person>().Update(person.Id, person);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public IQueryable<Person> GetAfter1990()

@@ -26,6 +26,7 @@ namespace EventApp.Services {
             // return place;
 
             await _unitOfWork.GetRepository<Place>().Create(place);
+            await _unitOfWork.SaveChangesAsync();
             return place;
         }
 
@@ -36,6 +37,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
 
             await _unitOfWork.GetRepository<Place>().Delete(placeId);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Place> GetPlaceAsync(int placeId)
@@ -59,6 +61,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
 
             await _unitOfWork.GetRepository<Place>().Update(place.Id, place);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

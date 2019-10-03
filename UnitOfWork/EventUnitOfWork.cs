@@ -5,7 +5,7 @@ namespace EventApp.UnitOfWork
 {
     public interface IEventUnitOfWork
     {
-        public object GetEventsAndPlaces();
+        object GetEventsAndPlaces();
     }
     public class EventUnitOfWork<TContext> : UnitOfWork<TContext>, IEventUnitOfWork where TContext : DbContext
     {
