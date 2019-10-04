@@ -29,6 +29,7 @@ namespace EventApp.Services {
             // return evt;
 
             await _unitOfWork.GetRepository<Event>().Create(evt);
+            await _unitOfWork.SaveChangesAsync();
             return evt;
         }
 
@@ -39,6 +40,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
             
             await _unitOfWork.GetRepository<Event>().Delete(evtId);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<Event> GetEventAsync(int evtId)
@@ -46,7 +48,7 @@ namespace EventApp.Services {
             // var evt = await _context.Events.Where(e => e.Id == evtId).Include(e => e.Place).FirstOrDefaultAsync();
             // return evt;
 
-            var evt = _unitOfWork.GetRepository<Event>().GetByIdWithInclude(evtId, e => e.Include(e => e.Place));
+            var evt = _unitOfWork.GetRepository<Event>().GetByIdWithInclude(evtId, src => src.Include(e => e.Place));
             return evt;
         }
 
@@ -63,6 +65,7 @@ namespace EventApp.Services {
             // await _context.SaveChangesAsync();
 
             await _unitOfWork.GetRepository<Event>().Update(evt.Id, evt);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public object GetEventsAndPlaces()
