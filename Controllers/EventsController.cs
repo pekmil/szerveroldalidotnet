@@ -121,5 +121,20 @@ namespace EventApp.Controllers
             var obj = _eventService.GetEventsAndPlaces();
             return Ok(obj);
         }
+
+        /// <summary>
+        /// Create event and place
+        /// </summary>
+        /// <response code="201">Created</response>
+        /// <response code="500">Server error</response>
+        // POST api/events/createeventwithplace
+        [HttpPost]
+        [ProducesResponseType(typeof(EventReadDto), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateEventWithPlace([FromBody] Event evt)
+        {
+            var obj = await _eventService.CreateEventWithPlace(evt, evt.Place);
+            return Created($"/api/events/createeventwithplace", obj);
+        }
     }
 }

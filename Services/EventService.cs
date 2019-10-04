@@ -69,5 +69,33 @@ namespace EventApp.Services {
         {
             return _eventUnitOfWork.GetEventsAndPlaces();
         }
+
+        public async Task<Event> CreateEventWithPlace(Event evt, Place place)
+        {
+            if(evt == null || place == null)
+            {
+                return null;
+            }
+
+            var obj = await _eventUnitOfWork.CreateEventWithPlace(evt, place);
+
+            var people = _unitOfWork.GetRepository<Person>().GetAll();
+
+            foreach(var person in people)
+            {
+                Invitation invitation = new Invitation
+                {
+                    EventId = obj.Id,
+                    PersonId = person.Id,
+                    Status = InvitationStatus.Created
+                };
+
+                await _unitOfWork.GetRepository<Invitation>().Create(invitation, false);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return obj;
+        }
     }
 }

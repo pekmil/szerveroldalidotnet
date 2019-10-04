@@ -30,10 +30,14 @@ namespace EventApp.Repository
             return DbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task Create(TEntity entity)
+        public async Task Create(TEntity entity, bool saveChanges = true)
         {
             await DbSet.AddAsync(entity);
-            await Context.SaveChangesAsync();
+            if(saveChanges)
+            {
+                await Context.SaveChangesAsync();
+            }
+            
         }
 
         public async Task Update(int id, TEntity entity)

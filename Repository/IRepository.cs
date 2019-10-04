@@ -13,7 +13,7 @@ namespace EventApp.Repository
     
         Task<TEntity> GetById(int id);
     
-        Task Create(TEntity entity);
+        Task Create(TEntity entity, bool saveChanges = true);
     
         Task Update(int id, TEntity entity);
     

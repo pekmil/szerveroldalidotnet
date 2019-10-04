@@ -16,5 +16,7 @@ namespace EventApp.Services {
         Task<Event> GetEventAsync(int evtId);
 
         object GetEventsAndPlaces();
+
+        Task<Event> CreateEventWithPlace(Event evt, Place place);
     }
 }
