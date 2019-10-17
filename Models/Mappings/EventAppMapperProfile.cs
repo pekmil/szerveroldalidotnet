@@ -3,7 +3,8 @@ using AutoMapper;
 namespace EventApp.Models.Mappings {
     public class EventAppMapperProfile : Profile {
         public EventAppMapperProfile(){
-            CreateMap<EventCreateDto, Event>();
+            CreateMap<EventCreateDto, Event>()
+                .ForMember(dst => dst.PlaceIdentity, opt => opt.MapFrom(src => src.PlaceId));
             CreateMap<EventUpdateDto, Event>();
             CreateMap<Event, EventReadDto>()
                 .ForMember(dst => dst.PlaceName, opt => opt.MapFrom(src => src.Place.Name))

@@ -6,6 +6,8 @@ using AutoMapper;
 using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventApp.Controllers
@@ -13,6 +15,7 @@ namespace EventApp.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class InvitationsController : ControllerBase
     {
         private readonly IInvitationService _invitationService;
@@ -32,6 +35,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<InvitationReadDto>), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<IEnumerable<InvitationReadDto>> GetAll()
         {
             var invitations = _invitationService.GetInvitations();
@@ -49,6 +53,7 @@ namespace EventApp.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([FromBody] InvitationCreateDto invitationDto)
         {
             var invitation = _mapper.Map<Invitation>(invitationDto);
@@ -67,6 +72,8 @@ namespace EventApp.Controllers
         [HttpPut("{personId}/{eventId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
+        [Authorize(Policy = "AdultsOnly")]
         public async Task<IActionResult> Accept(int personId, int eventId)
         {
             await _invitationService.UpdateInvitationAsync(personId, eventId, InvitationStatus.Accepted);
@@ -84,6 +91,8 @@ namespace EventApp.Controllers
         [HttpPut("{personId}/{eventId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
+        [Authorize(Policy = "AdultsOnly")]
         public async Task<IActionResult> Decline(int personId, int eventId)
         {
             await _invitationService.UpdateInvitationAsync(personId, eventId, InvitationStatus.Declined);

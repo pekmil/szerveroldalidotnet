@@ -1,12 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EventApp.Models {
-    public class EventAppDbContext : DbContext {
+    public class EventAppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int> {
         
         public DbSet<Event> Events { get; set; }
 
@@ -15,6 +17,8 @@ namespace EventApp.Models {
         public DbSet<Person> People { get; set; }
 
         public DbSet<Invitation> Invitations { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUsers {get; set;}
 
         public EventAppDbContext(DbContextOptions<EventAppDbContext> options) : base(options){}
 

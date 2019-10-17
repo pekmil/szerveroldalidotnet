@@ -7,6 +7,8 @@ using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Repository;
 using EventApp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventApp.Controllers
@@ -14,6 +16,7 @@ namespace EventApp.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PeopleController : ControllerBase
     {
         private readonly IPersonService _personService;
@@ -33,6 +36,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PersonReadDto>), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<IEnumerable<PersonReadDto>> GetAll()
         {
             var people = _personService.GetPeople();
@@ -50,6 +54,7 @@ namespace EventApp.Controllers
         [HttpGet("{personId}")]
         [ProducesResponseType(typeof(PersonReadDto), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult<PersonReadDto>> Get(int personId)
         {
             var person = await _personService.GetPersonAsync(personId);
@@ -67,6 +72,7 @@ namespace EventApp.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([FromBody] PersonCreateDto personDto)
         {
             var person = _mapper.Map<Person>(personDto);
@@ -85,6 +91,7 @@ namespace EventApp.Controllers
         [HttpPut("{peopleId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(int personId, [FromBody] PersonUpdateDto personDto)
         {
             var person = _mapper.Map<Person>(personDto);
@@ -102,6 +109,7 @@ namespace EventApp.Controllers
         [HttpDelete("{personId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int personId)
         {
             await _personService.DeletePersonAsync(personId);
@@ -117,6 +125,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PersonReadDto>), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<IEnumerable<PersonReadDto>> GetAfter1990()
         {
             var people = _personService.GetAfter1990();

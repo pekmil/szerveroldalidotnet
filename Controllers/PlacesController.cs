@@ -6,6 +6,8 @@ using AutoMapper;
 using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventApp.Controllers
@@ -13,6 +15,7 @@ namespace EventApp.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PlacesController : ControllerBase
     {
         private readonly IPlaceService _placeService;
@@ -32,6 +35,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PlaceReadDto>), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<IEnumerable<PlaceReadDto>> GetAll()
         {
             var places = _placeService.GetPlaces();
@@ -49,6 +53,7 @@ namespace EventApp.Controllers
         [HttpGet("{placeId}")]
         [ProducesResponseType(typeof(PlaceReadDto), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult<PlaceReadDto>> Get(int placeId)
         {
             var place = await _placeService.GetPlaceAsync(placeId);
@@ -66,6 +71,7 @@ namespace EventApp.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([FromBody] PlaceCreateDto placeDto)
         {
             var place = _mapper.Map<Place>(placeDto);
@@ -84,6 +90,7 @@ namespace EventApp.Controllers
         [HttpPut("{placeId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(int placeId, [FromBody] PlaceUpdateDto placeDto)
         {
             var place = _mapper.Map<Place>(placeDto);
@@ -101,6 +108,7 @@ namespace EventApp.Controllers
         [HttpDelete("{placeId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int placeId)
         {
             await _placeService.DeletePlaceAsync(placeId);

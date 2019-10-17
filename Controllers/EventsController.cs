@@ -6,6 +6,8 @@ using AutoMapper;
 using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventApp.Controllers
@@ -13,6 +15,7 @@ namespace EventApp.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EventsController : ControllerBase
     {
         private readonly IEventService _eventService;
@@ -32,6 +35,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<EventReadDto>), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<IEnumerable<EventReadDto>> GetAll()
         {
             var events = _eventService.GetEvents();
@@ -49,6 +53,7 @@ namespace EventApp.Controllers
         [HttpGet("{evtId}")]
         [ProducesResponseType(typeof(EventReadDto), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult<EventReadDto>> Get(int evtId)
         {
             var evt = await _eventService.GetEventAsync(evtId);
@@ -66,6 +71,7 @@ namespace EventApp.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([FromBody] EventCreateDto evtDto)
         {
             var evt = _mapper.Map<Event>(evtDto);
@@ -84,6 +90,7 @@ namespace EventApp.Controllers
         [HttpPut("{evtId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(int evtId, [FromBody] EventUpdateDto evtDto)
         {
             var evt = _mapper.Map<Event>(evtDto);
@@ -101,6 +108,7 @@ namespace EventApp.Controllers
         [HttpDelete("{evtId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int evtId)
         {
             await _eventService.DeleteEventAsync(evtId);
@@ -116,6 +124,7 @@ namespace EventApp.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(EventReadDto), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult<object> GetEventsAndPlaces()
         {
             var obj = _eventService.GetEventsAndPlaces();
@@ -131,6 +140,7 @@ namespace EventApp.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(EventReadDto), 200)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateEventWithPlace([FromBody] Event evt)
         {
             var obj = await _eventService.CreateEventWithPlace(evt, evt.Place);

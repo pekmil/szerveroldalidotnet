@@ -15,5 +15,7 @@ namespace EventApp.Models {
         public int PlaceIdentity { get; set; }
 
         public List<EventStaff> Staff { get; set; }
+
+        public bool AdultsOnly { get; set; }
     }
 }

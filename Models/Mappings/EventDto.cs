@@ -13,6 +13,8 @@ namespace EventApp.Models.Mappings {
 
     public class EventCreateDto : EventDto { 
         public int PlaceId { get; set; }
+
+        public bool AdultsOnly { get; set; }
     }
 
     public class EventUpdateDto : EventDto { 
@@ -27,5 +29,7 @@ namespace EventApp.Models.Mappings {
         public string PlaceName { get; set; }
 
         public string PlaceAddress { get; set; }
+
+        public bool AdultsOnly { get; set; }
     }
 }
