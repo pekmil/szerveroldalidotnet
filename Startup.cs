@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EventApp.Auth;
+using EventApp.Middlewares;
 using EventApp.Models;
 using EventApp.Models.Mappings;
 using EventApp.Repository;
@@ -50,6 +51,8 @@ namespace EventApp
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHttpContextAccessor();
+
             services.AddDbContext<EventAppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EventDatabase")));
 
             services.AddScoped<IEventService, EventService>();
@@ -62,6 +65,8 @@ namespace EventApp
 
             services.AddScoped<IUnitOfWork, UnitOfWork<EventAppDbContext>>();
             services.AddScoped<IEventUnitOfWork, EventUnitOfWork<EventAppDbContext>>();
+
+            services.AddScoped<IApiLogService, ApiLogService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -167,6 +172,8 @@ namespace EventApp
 
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<RequestLoggingMiddleware>();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

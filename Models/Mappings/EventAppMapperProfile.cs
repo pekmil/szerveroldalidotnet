@@ -5,7 +5,8 @@ namespace EventApp.Models.Mappings {
         public EventAppMapperProfile(){
             CreateMap<EventCreateDto, Event>()
                 .ForMember(dst => dst.PlaceIdentity, opt => opt.MapFrom(src => src.PlaceId));
-            CreateMap<EventUpdateDto, Event>();
+            CreateMap<EventUpdateDto, Event>()
+                .ForMember(dst => dst.PlaceIdentity, opt => opt.MapFrom(src => src.PlaceId));;
             CreateMap<Event, EventReadDto>()
                 .ForMember(dst => dst.PlaceName, opt => opt.MapFrom(src => src.Place.Name))
                 .ForMember(dst => dst.PlaceAddress, opt => opt.MapFrom(src => src.Place.Address));

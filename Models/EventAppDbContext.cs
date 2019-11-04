@@ -18,7 +18,9 @@ namespace EventApp.Models {
 
         public DbSet<Invitation> Invitations { get; set; }
 
-        public DbSet<ApplicationUser> ApplicationUsers {get; set;}
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<ApiLogEntry> ApiLogEntries { get; set; }
 
         public EventAppDbContext(DbContextOptions<EventAppDbContext> options) : base(options){}
 
