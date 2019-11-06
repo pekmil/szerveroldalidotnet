@@ -19,7 +19,8 @@ namespace EventApp.Controllers {
 
         [AllowAnonymous]
         public IActionResult Error(){
-            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            var exceptionHandlerPathFeature = 
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             return BadRequest(exceptionHandlerPathFeature?.Error.Message);
         }
 

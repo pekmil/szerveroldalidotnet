@@ -135,6 +135,10 @@ namespace EventApp.Services {
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
             return claimsIdentity;
         }
+
+        public IQueryable<ApplicationUser> GetUsers(){
+            return _userManager.Users;
+        }
     }
 
 }
